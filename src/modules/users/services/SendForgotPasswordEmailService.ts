@@ -27,12 +27,21 @@ class SendForgotPasswordEmailService {
 
         if (!user) throw new AppError('User does not exist');
 
-        await this.userToken.generate(user.id);
-
-        this.mailProvider.sendMail(
-            email,
-            'Pedido de Recuperação de senha recebido',
-        );
+        const { token } = await this.userToken.generate(user.id);
+        await this.mailProvider.sendMail({
+            to: {
+                name: user.name,
+                email: user.email,
+            },
+            subject: '[GoBarber] Recuperação de senha 🔐',
+            templateData: {
+                template: 'Olá {{name}}: {{token}}',
+                variables: {
+                    name: user.name,
+                    token,
+                },
+            },
+        });
     }
 }
 

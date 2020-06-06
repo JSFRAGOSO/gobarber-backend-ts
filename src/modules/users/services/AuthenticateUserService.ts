@@ -22,13 +22,12 @@ class AuthenticateUserService {
     constructor(
         @inject('UsersRepository')
         private usersRepository: IUsersRepository,
-        @inject('hashProvider')
+        @inject('HashProvider')
         private hashProvider: IHashProvider,
     ) {}
 
     public async execute({ email, password }: IRequest): Promise<IResponse> {
         const user = await this.usersRepository.findByEmail(email);
-
         if (!user) {
             throw new AppError('Incorrect email/password', 401);
         }
