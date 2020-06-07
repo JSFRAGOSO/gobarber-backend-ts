@@ -1,7 +1,9 @@
-import { getRepository, Repository } from 'typeorm';
+import { getRepository, Repository, Raw } from 'typeorm';
 import IAppointmentsRepository from '@modules/appointments/repositories/IAppointmentsRepository';
 import Appointment from '@modules/appointments/infra/typeorm/entities/Appointment';
 import ICreateAppointmentDTO from '@modules/appointments/dtos/ICreateAppointmentDTO';
+import IFindAllInMonthDTO from '@modules/appointments/dtos/IFindAllInMonthDTO';
+import IFindAllInDayDTO from '@modules/appointments/dtos/IFindAllInDayDTO';
 
 class AppointmentsRepository implements IAppointmentsRepository {
     private ormRepository: Repository<Appointment>;
@@ -27,6 +29,47 @@ class AppointmentsRepository implements IAppointmentsRepository {
             where: { date },
         });
         return findAppointment;
+    }
+
+    public async findAllInMonthByProvider({
+        provider_id,
+        month,
+        year,
+    }: IFindAllInMonthDTO): Promise<Appointment[]> {
+        const parsedMonth = String(month).padStart(2, '0');
+        const appointments = await this.ormRepository.find({
+            where: {
+                provider_id,
+                date: Raw(
+                    dataFieldName =>
+                        `to_char(${dataFieldName}, 'MM-YYYY') = '${parsedMonth}-${year}'`,
+                ),
+            },
+        });
+
+        return appointments;
+    }
+
+    public async findAllInDayByProvider({
+        provider_id,
+        month,
+        year,
+        day,
+    }: IFindAllInDayDTO): Promise<Appointment[]> {
+        const parsedMonth = String(month).padStart(2, '0');
+        const parsedDay = String(day).padStart(2, '0');
+
+        const appointments = await this.ormRepository.find({
+            where: {
+                provider_id,
+                date: Raw(
+                    dataFieldName =>
+                        `to_char(${dataFieldName}, 'DD-MM-YYYY') = '${parsedDay}-${parsedMonth}-${year}'`,
+                ),
+            },
+        });
+
+        return appointments;
     }
 }
 
