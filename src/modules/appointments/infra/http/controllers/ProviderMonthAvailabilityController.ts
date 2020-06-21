@@ -2,14 +2,13 @@ import { Request, Response } from 'express';
 import { container } from 'tsyringe';
 import ListProviderMonthAvailabilityService from '@modules/appointments/services/ListProviderMonthAvailabilityService';
 
-class MonthAvailabilityController {
+class ProviderMonthAvailabilityController {
     public async index(
         request: Request,
         response: Response,
     ): Promise<Response> {
-        const provider_id = 'e34e017a-74ce-4440-ab0a-2c83651ec3b5';
-        const month = 4;
-        const year = 2020;
+        const { month, year } = request.body;
+        const { provider_id } = request.params;
 
         const listProviderMonthAvailabilityService = container.resolve(
             ListProviderMonthAvailabilityService,
@@ -25,4 +24,4 @@ class MonthAvailabilityController {
     }
 }
 
-export default new MonthAvailabilityController();
+export default new ProviderMonthAvailabilityController();
