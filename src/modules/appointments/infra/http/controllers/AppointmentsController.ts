@@ -16,7 +16,6 @@ class AppointmentController {
             CreateAppointmentService,
         );
 
-        console.log(user_id);
         const appointment = await createAppointmentService.execute({
             date: parsedDate,
             provider_id,
