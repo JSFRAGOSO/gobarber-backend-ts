@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import { container } from 'tsyringe';
 import CreateUserService from '@modules/users/services/CreateUserService';
+import { classToClass } from 'class-transformer';
 
 class UsersController {
     public async create(
@@ -15,7 +16,7 @@ class UsersController {
 
         delete user.password;
 
-        return response.status(201).json(user);
+        return response.status(201).json(classToClass(user));
     }
 }
 
