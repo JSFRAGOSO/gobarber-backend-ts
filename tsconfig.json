@@ -1,5 +1,5 @@
 {
-  "compilerOptions": {
+    "compilerOptions": {
     "target": "es5",
     "module": "commonjs",
     "outDir": "./dist",
@@ -19,4 +19,5 @@
     "emitDecoratorMetadata": true,
     "forceConsistentCasingInFileNames": true
   }
+
 }
