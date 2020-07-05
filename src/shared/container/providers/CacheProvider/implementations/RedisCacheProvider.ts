@@ -22,12 +22,11 @@ export default class RedisCacheProvider implements ICacheProvider {
     }
 
     public async invalitade(key: string): Promise<void> {
-        console.log(key);
+        await this.client.del(key);
     }
 
     public async invalitadeAllByPrefix(prefix: string): Promise<void> {
         const keys = await this.client.keys(`${prefix}:*`);
-        console.log(keys);
         const pipeline = await this.client.pipeline();
 
         keys.forEach(key => pipeline.del(key));
