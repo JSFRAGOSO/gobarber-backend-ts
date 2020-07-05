@@ -40,7 +40,6 @@ class ListProviderAppointmentsService {
                 },
             );
             await this.cacheProvider.save(cacheKey, appointments);
-            console.log('a query foi executada no banco de dados!');
         }
         return appointments;
     }
