@@ -18,6 +18,6 @@ appointmentsRouter.post(
     }),
     AppointmentsController.create,
 );
-appointmentsRouter.get('/me', ProviderAppointmentsController.index);
+appointmentsRouter.get('/@me', ProviderAppointmentsController.index);
 
 export default appointmentsRouter;

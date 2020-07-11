@@ -1,7 +1,6 @@
 import { inject, injectable } from 'tsyringe';
-import { getDaysInMonth, getDate } from 'date-fns';
+import { getDaysInMonth, getDate, isAfter } from 'date-fns';
 import IAppointmentsRepository from '../repositories/IAppointmentsRepository';
-// import User from '@modules/users/infra/typeorm/entities/User';
 
 interface IRequest {
     provider_id: string;
@@ -49,7 +48,12 @@ class ListProvidersMonthAvailabilityService {
 
             return {
                 day,
-                avaliable: appointmentsInDay.length < 10,
+                avaliable:
+                    appointmentsInDay.length < 10 &&
+                    isAfter(
+                        new Date(year, month - 1, day, 23, 59, 59),
+                        new Date(),
+                    ),
             };
         });
 

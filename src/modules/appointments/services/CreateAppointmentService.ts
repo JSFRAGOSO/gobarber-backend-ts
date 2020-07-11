@@ -40,8 +40,9 @@ class CreateAppoitmentService {
                 'Appointments can only be booked between 8:00 and 17:00',
             );
 
-        const findAppointmentInSameDate = await this.appointmentsRepository.findByDate(
+        const findAppointmentInSameDate = await this.appointmentsRepository.findByDateAndProvider(
             appointmentDate,
+            provider_id,
         );
 
         if (findAppointmentInSameDate) {
